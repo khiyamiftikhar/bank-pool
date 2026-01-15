@@ -1,0 +1,11 @@
+menu "Bank Resource Manager"
+
+config BANK_MAX_POOLS
+    int "Maximum number of pools"
+    default 4
+    range 1 16
+    help
+        Maximum number of object pools that can be registered
+        with the bank component.
+
+endmenu
