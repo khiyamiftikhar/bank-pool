@@ -4,8 +4,10 @@ config BANK_MAX_POOLS
     int "Maximum number of pools"
     default 4
     range 1 16
-    help
-        Maximum number of object pools that can be registered
-        with the bank component.
+
+config BANK_MAX_OBJECTS_PER_POOL
+    int "Maximum objects per pool"
+    default 8
+    range 1 64
 
 endmenu

@@ -11,38 +11,34 @@ extern "C" {
 /* Opaque pool handle */
 typedef struct bank_pool *bank_pool_handle_t;
 
-/*
- * Metadata size macro.
- * User must allocate this much memory for each pool.
- */
-#define BANK_POOL_META_SIZE(obj_count) \
-    (sizeof(struct bank_pool) + (obj_count))
-
-/*
- * Register a pool with the bank.
+/**
+ * @brief Register a pool with the bank.
  *
- * object_array : pointer to array of objects (owned by user)
- * object_size  : sizeof(single object)
- * object_count : number of objects in array
- * meta_buffer  : uint8_t buffer of size BANK_POOL_META_SIZE(object_count)
+ * @param out_handle   Returned handle for this pool
+ * @param object_array Pointer to user-owned object array
+ * @param object_size  Size of each object
+ * @param object_count Number of objects in array
  *
- * out_handle   : returned pool handle
+ * @return ESP_OK on success
+ *         ESP_ERR_NO_MEM if max pools reached
+ *         ESP_ERR_INVALID_ARG on bad input
  */
 esp_err_t bank_register_pool(bank_pool_handle_t *out_handle,
                              void *object_array,
                              size_t object_size,
-                             size_t object_count,
-                             void *meta_buffer);
+                             size_t object_count);
 
-/*
- * Allocate one object from a pool.
- * Best-effort: returns NULL if none available.
+/**
+ * @brief Allocate one object from a pool (best effort).
+ *
+ * @return Pointer to object or NULL if none available
  */
 void *bank_alloc(bank_pool_handle_t handle);
 
-/*
- * Free an object back to the pool.
- * Object must belong to this pool.
+/**
+ * @brief Free an object back to its pool.
+ *
+ * @note Object must belong to the pool.
  */
 void bank_free(bank_pool_handle_t handle, void *obj);
 
